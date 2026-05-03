@@ -38,6 +38,13 @@ pip install -e ".[dev]"
 
 По умолчанию SQLite использует файл `./data/local.db` (каталог `data/` создаётся при старте). Чтобы указать другой URL, задайте переменную окружения `DATABASE_URL` или создайте файл `.env` в `back/` с той же переменной. Для быстрых интеграционных проверок в памяти: `DATABASE_URL=sqlite:///:memory:`.
 
+Если вы меняли модель таблицы `experiments`, удалите `./data/local.db`, чтобы SQLite создала таблицу заново (пока миграций Alembic нет).
+
+### Ручки `/experiments`
+
+- `GET /experiments?limit=&offset=` — список с пагинацией; ответ: `items`, `total`, `limit`, `offset`. Параметры: `limit` от 1 до 500, `offset` ≥ 0.
+- `POST /experiments` — создание записи; в теле JSON: `engine` (один из Handlebars, Mustache, EJS, Pug, Nunjucks, Liquid), `input_template`, `input_data` (JSON-объект или массив), `output`, `execution_time` (секунды, ≥ 0), `data` (дата эксперимента, ISO `YYYY-MM-DD`).
+
 ## Запуск локально
 
 ```bash

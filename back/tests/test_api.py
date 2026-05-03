@@ -1,4 +1,5 @@
 import os
+from datetime import date
 
 import pytest
 from fastapi.testclient import TestClient
@@ -21,35 +22,85 @@ def client() -> TestClient:
         yield c
 
 
+def _sample_payload() -> dict:
+    return {
+        "engine": "Handlebars",
+        "input_template": "Hello {{name}}",
+        "input_data": {"name": "world"},
+        "output": "Hello world",
+        "execution_time": 0.0012,
+        "data": "2026-05-03",
+    }
+
+
 def test_health(client: TestClient) -> None:
     r = client.get("/health")
     assert r.status_code == 200
     assert r.json() == {"status": "ok"}
 
 
-def test_experiments_crud(client: TestClient) -> None:
-    r = client.post(
-        "/experiments",
-        json={"name": "bench-1", "template_engine": "jinja2", "payload": {"runs": 3}},
-    )
+def test_create_experiment(client: TestClient) -> None:
+    body = _sample_payload()
+    r = client.post("/experiments", json=body)
     assert r.status_code == 201
     data = r.json()
-    assert data["name"] == "bench-1"
-    assert data["template_engine"] == "jinja2"
-    assert data["payload"] == {"runs": 3}
-    eid = data["id"]
+    assert data["id"] >= 1
+    assert data["engine"] == "Handlebars"
+    assert data["input_template"] == body["input_template"]
+    assert data["input_data"] == body["input_data"]
+    assert data["output"] == body["output"]
+    assert abs(data["execution_time"] - body["execution_time"]) < 1e-9
+    assert data["data"] == body["data"]
 
-    r = client.get("/experiments")
+
+def test_create_experiment_invalid_engine(client: TestClient) -> None:
+    body = _sample_payload()
+    body["engine"] = "FakeEngine"
+    r = client.post("/experiments", json=body)
+    assert r.status_code == 422
+
+
+def test_list_experiments_pagination_empty(client: TestClient) -> None:
+    r = client.get("/experiments", params={"limit": 10, "offset": 0})
     assert r.status_code == 200
-    rows = r.json()
-    assert len(rows) == 1
-    assert rows[0]["id"] == eid
+    page = r.json()
+    assert page == {"items": [], "total": 0, "limit": 10, "offset": 0}
 
-    r = client.get(f"/experiments/{eid}")
+
+def test_list_experiments_pagination(client: TestClient) -> None:
+    for i in range(3):
+        r = client.post(
+            "/experiments",
+            json={
+                "engine": "Mustache",
+                "input_template": f"t{i}",
+                "input_data": {"i": i},
+                "output": f"o{i}",
+                "execution_time": float(i) * 0.01,
+                "data": date(2026, 5, 1 + i).isoformat(),
+            },
+        )
+        assert r.status_code == 201
+
+    r = client.get("/experiments", params={"limit": 2, "offset": 0})
     assert r.status_code == 200
-    assert r.json()["id"] == eid
+    page = r.json()
+    assert page["total"] == 3
+    assert page["limit"] == 2
+    assert page["offset"] == 0
+    assert len(page["items"]) == 2
+    assert page["items"][0]["input_template"] == "t2"
+    assert page["items"][1]["input_template"] == "t1"
+
+    r = client.get("/experiments", params={"limit": 2, "offset": 2})
+    page = r.json()
+    assert page["total"] == 3
+    assert len(page["items"]) == 1
+    assert page["items"][0]["input_template"] == "t0"
 
 
-def test_get_experiment_missing(client: TestClient) -> None:
-    r = client.get("/experiments/999")
-    assert r.status_code == 404
+def test_list_experiments_limit_validation(client: TestClient) -> None:
+    r = client.get("/experiments", params={"limit": 0, "offset": 0})
+    assert r.status_code == 422
+    r = client.get("/experiments", params={"limit": 501, "offset": 0})
+    assert r.status_code == 422
