@@ -1,5 +1,6 @@
 from pathlib import Path
 
+from pydantic import Field
 from pydantic_settings import BaseSettings, SettingsConfigDict
 from sqlalchemy.engine import make_url
 
@@ -8,6 +9,8 @@ class Settings(BaseSettings):
     model_config = SettingsConfigDict(env_file=".env", env_file_encoding="utf-8", extra="ignore")
 
     database_url: str = "sqlite:///./data/local.db"
+    #: OpenRouter API key from `.env`/environment variable `OPENROUTER_API_KEY`.
+    openrouter_api_key: str = Field(default="", validation_alias="OPENROUTER_API_KEY")
 
 
 def ensure_sqlite_parent_dir(url_str: str) -> None:

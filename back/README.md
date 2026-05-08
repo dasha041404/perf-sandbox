@@ -45,6 +45,12 @@ pip install -e ".[dev]"
 - `GET /experiments?limit=&offset=` — список с пагинацией; ответ: `items`, `total`, `limit`, `offset`. Параметры: `limit` от 1 до 500, `offset` ≥ 0.
 - `POST /experiments` — создание записи; в теле JSON: `engine` (один из Handlebars, Mustache, EJS, Pug, Nunjucks, Liquid), `input_template`, `input_data` (JSON-объект или массив), `output`, `execution_time` (секунды, ≥ 0), `data` (дата эксперимента, ISO `YYYY-MM-DD`).
 
+### Ручка `GET /list_templates`
+
+Транспиляция шаблона через [OpenRouter](https://openrouter.ai): query-параметры `engines` (список движков через запятую без пробелов, как в `TemplateEngine`), `input_engine`, `input_template`. Ответ — JSON-объект `{ "<движок>": "<строка шаблона>", ... }`.
+
+Нужна переменная окружения **`OPENROUTER_API_KEY`** (или запись в `.env` в `back/`); ключ в репозиторий не коммитить. В Docker можно передать ту же переменную в окружение сервиса `api` (см. `docker-compose.yml`).
+
 ## Запуск локально
 
 ```bash
