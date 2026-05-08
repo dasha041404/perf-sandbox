@@ -4,6 +4,7 @@ from fastapi import FastAPI
 
 from src.database import Base, engine
 from src.routers.experiments import router as experiments_router
+from src.routers.templates import router as templates_router
 
 
 @asynccontextmanager
@@ -21,3 +22,4 @@ def health() -> dict[str, str]:
 
 
 app.include_router(experiments_router, prefix="/experiments")
+app.include_router(templates_router)

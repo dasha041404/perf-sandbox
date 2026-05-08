@@ -1,0 +1,4 @@
+﻿# Secrets and local overrides — excluded from Cursor indexing / agent context.
+**/.env
+.env
+

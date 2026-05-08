@@ -1,25 +1,6 @@
-import os
 from datetime import date
 
-import pytest
 from fastapi.testclient import TestClient
-
-# conftest.py sets DATABASE_URL before this module imports the app.
-
-
-@pytest.fixture
-def client() -> TestClient:
-    database_url = os.environ["DATABASE_URL"]
-    assert "memory" in database_url
-
-    from src.database import Base, engine  # noqa: PLC0415
-    from src.main import app  # noqa: PLC0415
-
-    Base.metadata.drop_all(bind=engine)
-    Base.metadata.create_all(bind=engine)
-
-    with TestClient(app) as c:
-        yield c
 
 
 def _sample_payload() -> dict:
