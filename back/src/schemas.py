@@ -1,22 +1,42 @@
-from datetime import datetime
+from datetime import date
+from enum import StrEnum
 from typing import Any
 
 from pydantic import BaseModel, ConfigDict, Field
 
 
+class TemplateEngine(StrEnum):
+    HANDLEBARS = "Handlebars"
+    MUSTACHE = "Mustache"
+    EJS = "EJS"
+    PUG = "Pug"
+    NUNJUCKS = "Nunjucks"
+    LIQUID = "Liquid"
+
+
 class ExperimentCreate(BaseModel):
-    name: str = Field(..., min_length=1, max_length=255)
-    template_engine: str | None = Field(default=None, max_length=128)
-    description: str | None = None
-    payload: dict[str, Any] | list[Any] | None = None
+    engine: TemplateEngine
+    input_template: str
+    input_data: dict[str, Any] | list[Any]
+    output: str
+    execution_time: float = Field(..., ge=0, description="Execution time in seconds")
+    data: date
 
 
 class ExperimentRead(BaseModel):
     model_config = ConfigDict(from_attributes=True)
 
     id: int
-    name: str
-    template_engine: str | None
-    description: str | None
-    payload: dict[str, Any] | list[Any] | None
-    created_at: datetime
+    engine: TemplateEngine
+    input_template: str
+    input_data: dict[str, Any] | list[Any]
+    output: str
+    execution_time: float
+    data: date
+
+
+class ExperimentListPage(BaseModel):
+    items: list[ExperimentRead]
+    total: int = Field(..., ge=0)
+    limit: int = Field(..., ge=1)
+    offset: int = Field(..., ge=0)
