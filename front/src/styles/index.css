@@ -8,19 +8,14 @@
   --text-xs: 0.625rem;
   --text-sm: 0.75rem;
   --text-md: 1rem;
-  --text-lg: 1.25rem;
+  --text-lg: 1.2rem;
   --text-xl: 1.5rem;
   --text-2xl: 2rem;
 
-  /* Header Typography */
-  --header-title-size: 1.5rem;
-  --header-title-weight: 600;
-  --header-nav-size: 1.25rem;
-  --header-nav-weight: 500;
   --header-padding: 6.25rem;
 
-  --line-height-tight: 1.1;
-  --line-height-normal: 1.4;
+  --line-height-tight: 1;
+  --line-height-normal: 1.2;
   --line-height-relaxed: 1.6;
 
   --space-1: 0.25rem;

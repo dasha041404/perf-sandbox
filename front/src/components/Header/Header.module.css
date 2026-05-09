@@ -18,22 +18,22 @@
 .brand {
   display: flex;
   align-items: center;
-  gap: 0.65625rem;
+  gap: 0.6rem;
   min-width: 0;
 }
 
 .logo {
   flex: 0 0 auto;
-  width: 1.3125rem;
-  height: 1.3125rem;
+  width: 21px;
+  height: 21px;
 }
 
 .title {
   margin: 0;
   color: var(--theme-text-primary);
-  font-size: var(--header-title-size);
-  font-weight: var(--header-title-weight);
-  line-height: 1.02;
+  font-size: var(--text-lg);
+  font-weight: 500;
+  line-height: var(--line-height-normal);
   white-space: nowrap;
 }
 
@@ -45,9 +45,9 @@
 
 .link {
   color: var(--theme-text-secondary);
-  font-size: var(--header-nav-size);
-  font-weight: var(--header-nav-weight);
-  line-height: 0.875;
+  font-size: var(--text-md);
+  font-weight: 500;
+  line-height: var(--line-height-normal);
   transition: color 0.2s ease;
 }
 
