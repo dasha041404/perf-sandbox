@@ -1,10 +1,12 @@
 import { useState } from 'react'
+import { TrashIcon } from './assets'
 
 function App() {
   const [count, setCount] = useState(0)
 
   return (
         <div>
+          <TrashIcon />
           <h1>Get started</h1>
           <p>
             Edit <code>src/App.tsx</code> and save to test <code>HMR</code>
