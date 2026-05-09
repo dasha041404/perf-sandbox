@@ -1,0 +1,98 @@
+:root {
+  --font-sans: "Inter", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  --font-mono: "JetBrains Mono", "SFMono-Regular", Consolas, "Liberation Mono", monospace;
+
+  --text-xs: 0.625rem;
+  --text-sm: 0.75rem;
+  --text-md: 1rem;
+  --text-lg: 1.25rem;
+  --text-xl: 1.5rem;
+  --text-2xl: 2rem;
+
+  --line-height-tight: 1.1;
+  --line-height-normal: 1.4;
+  --line-height-relaxed: 1.6;
+
+  --space-1: 0.25rem;
+  --space-2: 0.5rem;
+  --space-3: 0.75rem;
+  --space-4: 1rem;
+  --space-5: 1.25rem;
+  --space-6: 1.5rem;
+  --space-8: 2rem;
+  --space-10: 2.5rem;
+  --space-12: 3rem;
+  --space-16: 4rem;
+
+  --radius-sm: 0.5rem;
+  --radius-md: 0.625rem;
+  --radius-lg: 0.75rem;
+  --radius-xl: 1rem;
+
+  --theme-bg-app: var(--color-bg-background);
+  --theme-bg-surface: var(--color-bg-surface-strong);
+  --theme-bg-surface-alt: var(--color-bg-surface);
+  --theme-bg-input: var(--color-bg-background);
+
+  --theme-text-primary: var(--color-text-primary);
+  --theme-text-secondary: var(--color-text-secondary);
+  --theme-text-muted: var(--color-text-muted);
+
+  --theme-border-default: var(--color-border-dark);
+  --theme-border-subtle: var(--color-border-subtle);
+
+  --theme-primary: var(--color-primary-blue);
+  --theme-success: var(--color-status-success);
+  --theme-warning: var(--color-status-warning);
+  --theme-danger: var(--color-status-danger);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body,
+#root {
+  min-height: 100%;
+}
+
+html,
+body,
+button,
+input,
+textarea,
+select {
+  font: inherit;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  font-family: var(--font-sans);
+  line-height: var(--line-height-normal);
+  color: var(--theme-text-primary);
+  background: var(--theme-bg-app);
+  color-scheme: dark;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+button,
+input,
+textarea,
+select {
+  font-family: inherit;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+button {
+  border: 0;
+  background: transparent;
+  padding: 0;
+}
