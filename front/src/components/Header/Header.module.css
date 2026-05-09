@@ -3,7 +3,7 @@
   min-height: 4.5rem;
   display: flex;
   align-items: center;
-  padding-inline: var(--space-8);
+  padding-inline: var(--header-padding);
   background: var(--theme-bg-app);
 }
 
@@ -18,7 +18,7 @@
 .brand {
   display: flex;
   align-items: center;
-  gap: var(--space-2);
+  gap: 0.65625rem;
   min-width: 0;
 }
 
@@ -31,23 +31,23 @@
 .title {
   margin: 0;
   color: var(--theme-text-primary);
-  font-size: var(--text-lg);
-  font-weight: 500;
-  line-height: 1.2;
+  font-size: var(--header-title-size);
+  font-weight: var(--header-title-weight);
+  line-height: 1.02;
   white-space: nowrap;
 }
 
 .navigation {
   display: flex;
   align-items: center;
-  gap: var(--space-6);
+  gap: 1.875rem;
 }
 
 .link {
   color: var(--theme-text-secondary);
-  font-size: var(--text-md);
-  font-weight: 500;
-  line-height: 1.2;
+  font-size: var(--header-nav-size);
+  font-weight: var(--header-nav-weight);
+  line-height: 0.875;
   transition: color 0.2s ease;
 }
 
