@@ -32,7 +32,7 @@
   margin: 0;
   color: var(--theme-text-primary);
   font-size: var(--text-lg);
-  font-weight: 600;
+  font-weight: 500;
   line-height: 1.2;
   white-space: nowrap;
 }
