@@ -6,19 +6,6 @@
   color: var(--theme-text-primary);
 }
 
-.header {
-  border-bottom: 1px solid var(--theme-border-default);
-  min-height: 4.5rem;
-  display: flex;
-  align-items: center;
-  padding-inline: var(--space-8);
-}
-
-.headerPlaceholder {
-  color: var(--theme-text-secondary);
-  font-size: var(--text-sm);
-}
-
 .main {
   flex: 1;
   padding: var(--space-8);

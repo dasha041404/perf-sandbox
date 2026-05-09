@@ -1,0 +1,60 @@
+.header {
+  border-bottom: 1px solid var(--theme-border-default);
+  min-height: 4.5rem;
+  display: flex;
+  align-items: center;
+  padding-inline: var(--space-8);
+  background: var(--theme-bg-app);
+}
+
+.container {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-8);
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  min-width: 0;
+}
+
+.logo {
+  flex: 0 0 auto;
+  width: 1.3125rem;
+  height: 1.3125rem;
+}
+
+.title {
+  margin: 0;
+  color: var(--theme-text-primary);
+  font-size: var(--text-lg);
+  font-weight: 600;
+  line-height: 1.2;
+  white-space: nowrap;
+}
+
+.navigation {
+  display: flex;
+  align-items: center;
+  gap: var(--space-6);
+}
+
+.link {
+  color: var(--theme-text-secondary);
+  font-size: var(--text-md);
+  font-weight: 500;
+  line-height: 1.2;
+  transition: color 0.2s ease;
+}
+
+.link:hover {
+  color: var(--theme-text-primary);
+}
+
+.linkActive {
+  color: var(--theme-text-primary);
+}
