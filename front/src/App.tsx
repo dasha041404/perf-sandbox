@@ -1,11 +1,10 @@
-import { TrashIcon } from './assets'
+import { RouterProvider } from 'react-router-dom'
+
+import { router } from './config/router'
 
 function App() {
   return (
-        <div>
-          <TrashIcon />
-          <h1>Get started</h1>
-        </div>
+    <RouterProvider router={router} />
   )
 }
 
