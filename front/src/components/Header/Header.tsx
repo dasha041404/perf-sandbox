@@ -14,13 +14,13 @@ export function Header() {
 
         <nav aria-label="Main navigation" className={styles.navigation}>
           <NavLink
-            to={ROUTES.EXPERIMENT}
+            to={ROUTES.SANDBOX}
             className={({ isActive }) =>
               `${styles.link} ${isActive ? styles.linkActive : ''}`
             }
             end
           >
-            Experiment
+            Sandbox
           </NavLink>
           <NavLink
             to={ROUTES.RESULTS}
