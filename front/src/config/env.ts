@@ -1,11 +1,5 @@
-const DEFAULT_API_URL = 'http://localhost:8000'
+const DEFAULT_API_URL = 'http://localhost:8000';
 
-function normalizeApiUrl(value: string | undefined): string {
-  if (!value) {
-    return DEFAULT_API_URL
-  }
+const rawApiUrl = import.meta.env.VITE_API_URL || DEFAULT_API_URL;
 
-  return value.endsWith('/') ? value.slice(0, -1) : value
-}
-
-export const apiUrl = normalizeApiUrl(import.meta.env.VITE_API_URL)
+export const apiUrl = rawApiUrl.endsWith('/') ? rawApiUrl.slice(0, -1) : rawApiUrl;
