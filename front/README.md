@@ -6,6 +6,7 @@
 - [Сохранение отчета по prompts](#сохранение-отчета-по-prompts)
 - [Как скачать проект](#как-скачать-проект)
 - [Как запустить frontend локально](#как-запустить-frontend-локально)
+- [Как подготовить backend для frontend](#как-подготовить-backend-для-frontend)
 - [Как подключить Figma к VS Code](#как-подключить-figma-к-vs-code)
 - [Как работать с задачей](#как-работать-с-задачей)
 - [Правила именования веток](#правила-именования-веток)
@@ -107,6 +108,48 @@ Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser
 
 ```bash
 npm run dev
+```
+
+---
+
+## Как подготовить backend для frontend
+
+Frontend работает вместе с backend API, поэтому для локальной разработки нужен запущенный backend.
+
+Нужно создать свой OpenRouter API key и добавить его только в `back/.env`:
+
+```env
+OPENROUTER_API_KEY=your_key_here
+```
+
+### Запуск backend локально
+
+Перейдите в папку `back`, создайте и активируйте виртуальное окружение, затем установите зависимости:
+
+```bash
+pip install -e ".[dev]"
+```
+
+После этого запустите API:
+
+```bash
+uvicorn src.main:app --reload --host 0.0.0.0 --port 8000
+```
+
+### Проверка Swagger
+
+После запуска backend откройте документацию API:
+
+```text
+http://127.0.0.1:8000/docs
+```
+
+### Настройка frontend на backend
+
+В `front/.env` укажите адрес API:
+
+```env
+VITE_API_URL=http://localhost:8000
 ```
 
 ---
