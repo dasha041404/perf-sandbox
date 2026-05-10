@@ -1,0 +1,180 @@
+.page {
+  padding: var(--space-10) var(--space-16);
+  background: var(--theme-bg-app);
+  color: var(--theme-text-primary);
+  min-height: calc(100vh - 4.5rem);
+}
+
+.container {
+  max-width: 1240px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-8);
+}
+
+.section {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+}
+
+.label {
+  font-size: var(--text-lg);
+  font-weight: 500;
+  color: var(--theme-text-primary);
+  margin: 0;
+  padding: 0;
+}
+
+.helperText {
+  font-size: 0.625rem;
+  color: var(--theme-text-secondary);
+  margin: var(--space-3) 0 0;
+  padding: 0;
+  line-height: var(--line-height-normal);
+}
+
+.select,
+.textarea {
+  width: 100%;
+  padding: var(--space-5);
+  background: var(--theme-bg-surface);
+  border: 1px solid var(--theme-border-default);
+  border-radius: var(--radius-lg);
+  color: var(--theme-text-primary);
+  font-family: inherit;
+  font-size: var(--text-md);
+  line-height: var(--line-height-normal);
+}
+
+.select {
+  height: 4.4rem;
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  appearance: none;
+  padding-right: var(--space-12);
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='%239CA3AF' stroke-width='2'><polyline points='6 9 12 15 18 9'></polyline></svg>");
+  background-repeat: no-repeat;
+  background-position: right var(--space-4) center;
+  background-color: var(--theme-bg-surface);
+}
+
+.select:hover {
+  border-color: var(--theme-text-secondary);
+}
+
+.select:focus {
+  outline: none;
+  border-color: var(--theme-primary);
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+}
+
+.select option {
+  color: var(--theme-text-primary);
+  background: var(--theme-bg-surface);
+}
+
+.textarea {
+  min-height: 10rem;
+  resize: vertical;
+  font-family: var(--font-mono);
+  color: rgba(249, 250, 251, 0.5);
+}
+
+.textarea::placeholder {
+  color: rgba(249, 250, 251, 0.5);
+}
+
+.textarea:focus {
+  outline: none;
+  border-color: var(--theme-primary);
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+  color: var(--theme-text-primary);
+}
+
+.actions {
+  display: flex;
+  gap: var(--space-5);
+  margin-top: var(--space-5);
+}
+
+.button {
+  padding: var(--space-4) var(--space-5);
+  border: none;
+  border-radius: var(--radius-lg);
+  font-size: var(--text-md);
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  min-height: 3.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  white-space: nowrap;
+  font-family: inherit;
+}
+
+.buttonPrimary {
+  background: var(--theme-primary);
+  color: white;
+  padding: var(--space-4) var(--space-5);
+  min-width: 10.5rem;
+}
+
+.buttonPrimary:hover:not(:disabled) {
+  opacity: 0.9;
+}
+
+.buttonPrimary:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.buttonSecondary {
+  background: transparent;
+  color: var(--theme-text-primary);
+  border: 1px solid var(--theme-border-default);
+  padding: var(--space-4) var(--space-5);
+}
+
+.buttonSecondary:hover:not(:disabled) {
+  border-color: var(--theme-text-secondary);
+  background: rgba(59, 130, 246, 0.05);
+}
+
+.buttonSecondary:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.inputError {
+  border-color: var(--theme-danger);
+}
+
+.inputError:focus {
+  border-color: var(--theme-danger);
+  box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.1);
+}
+
+.errorMessage {
+  font-size: 0.625rem;
+  color: var(--theme-danger);
+  margin: var(--space-2) 0 0;
+  padding: 0;
+}
+
+@media (max-width: 768px) {
+  .page {
+    padding: var(--space-6) var(--space-8);
+  }
+
+  .actions {
+    flex-direction: column;
+  }
+
+  .button {
+    width: 100%;
+  }
+}
