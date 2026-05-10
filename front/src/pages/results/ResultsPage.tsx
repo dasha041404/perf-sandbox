@@ -1,3 +1,3 @@
 export function ResultsPage() {
-  return <main>Results Page</main>
+  return <main>Results Page</main>;
 }

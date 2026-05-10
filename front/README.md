@@ -24,7 +24,7 @@ https://www.figma.com/design/JoQkqEDAn8wFQIDNKAjPXy/sandbox?node-id=183-2899&t=2
 
 ---
 
-## Сохранение отчета по prompts 
+## Сохранение отчета по prompts
 
 Создайте файл propmts_log.md.
 ИИ-агенту напишите, чтобы он сохранял ваши запросы в данный файл: запрос + его ответ кратко. Это будет заготовка для вставки в отчет.
@@ -290,6 +290,7 @@ Issue -> Development -> Create a branch / Checkout locally
 ```
 
 Так GitHub автоматически свяжет между собой:
+
 - Issue;
 - ветку;
 - будущий Pull Request.
