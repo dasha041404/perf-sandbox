@@ -1,3 +1,3 @@
 export function SandboxPage() {
-  return <main>Sandbox Page</main>
+  return <main>Sandbox Page</main>;
 }

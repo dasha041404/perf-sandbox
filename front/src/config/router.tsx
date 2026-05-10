@@ -1,10 +1,10 @@
-import { createBrowserRouter, Navigate } from 'react-router-dom'
+import { createBrowserRouter, Navigate } from 'react-router-dom';
 
-import { Layout } from '../components/layout'
-import { ROUTES } from './routes'
-import { SandboxPage } from '../pages/sandbox'
-import { NotFoundPage } from '../pages/not-found'
-import { ResultsPage } from '../pages/results'
+import { Layout } from '../components/layout';
+import { ROUTES } from './routes';
+import { SandboxPage } from '../pages/sandbox';
+import { NotFoundPage } from '../pages/not-found';
+import { ResultsPage } from '../pages/results';
 
 export const router = createBrowserRouter([
   {
@@ -29,4 +29,4 @@ export const router = createBrowserRouter([
       },
     ],
   },
-])
+]);
