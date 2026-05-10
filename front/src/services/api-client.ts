@@ -2,31 +2,33 @@ import { apiUrl } from '../config/env'
 import { ApiClientError, type ApiRequestOptions, type QueryParams } from './api-types'
 
 function buildUrl(path: string, query?: QueryParams): URL {
-  const normalizedPath = path.startsWith('/') ? path : `/${path}`
-  const url = new URL(normalizedPath, apiUrl)
+  const normalizedBase = apiUrl.endsWith('/') ? apiUrl.slice(0, -1) : apiUrl;
+  const normalizedPath = path.startsWith('/') ? path : `/${path}`;
+
+  const url = new URL(`${normalizedBase}${normalizedPath}`, window.location.origin);
 
   if (!query) {
-    return url
+    return url;
   }
 
   for (const [key, rawValue] of Object.entries(query)) {
     if (rawValue == null) {
-      continue
+      continue;
     }
 
     if (Array.isArray(rawValue)) {
       for (const item of rawValue) {
         if (item != null) {
-          url.searchParams.append(key, String(item))
+          url.searchParams.append(key, String(item));
         }
       }
-      continue
+      continue;
     }
 
-    url.searchParams.set(key, String(rawValue))
+    url.searchParams.set(key, String(rawValue));
   }
 
-  return url
+  return url;
 }
 
 async function readResponseBody(response: Response): Promise<unknown> {
