@@ -1,17 +1,18 @@
-# Frontend Perf Sandbox
+# Фронтенд Perf Sandbox
 
 ## Содержание
 
 - [О проекте](#о-проекте)
-- [Сохранение отчета по prompts](#сохранение-отчета-по-prompts)
+- [Сохранение отчета по запросам](#сохранение-отчета-по-запросам)
 - [Как скачать проект](#как-скачать-проект)
-- [Как запустить frontend локально](#как-запустить-frontend-локально)
-- [Как подготовить backend для frontend](#как-подготовить-backend-для-frontend)
+- [Как запускать фронтенд локально](#как-запускать-фронтенд-локально)
+- [Как подготовить backend для фронтенда](#как-подготовить-backend-для-фронтенда)
+- [Как запустить весь стек через Docker](#как-запустить-весь-стек-через-docker)
 - [Как подключить Figma к VS Code](#как-подключить-figma-к-vs-code)
 - [Как работать с задачей](#как-работать-с-задачей)
 - [Правила именования веток](#правила-именования-веток)
 - [Правила коммитов](#правила-коммитов)
-- [Как создать Pull Request](#как-создать-pull-request)
+- [Как создать PR](#как-создать-pr)
 
 ---
 
@@ -24,7 +25,7 @@ https://www.figma.com/design/JoQkqEDAn8wFQIDNKAjPXy/sandbox?node-id=183-2899&t=2
 
 ---
 
-## Сохранение отчета по prompts
+## Сохранение отчета по запросам
 
 Создайте файл propmts_log.md.
 ИИ-агенту напишите, чтобы он сохранял ваши запросы в данный файл: запрос + его ответ кратко. Это будет заготовка для вставки в отчет.
@@ -71,7 +72,7 @@ cd perf-sandbox/front
 
 ---
 
-## Как запустить frontend локально
+## Как запускать фронтенд локально
 
 Установите зависимости:
 
@@ -112,45 +113,103 @@ npm run dev
 
 ---
 
-## Как подготовить backend для frontend
+## Запуск проекта локально
 
-Frontend работает вместе с backend API, поэтому для локальной разработки нужен запущенный backend.
+Фронтенд зависит от backend API, поэтому для полной работы должны быть запущены обе части.
 
-Нужно создать свой OpenRouter API key и добавить его только в `back/.env`:
+### Вариант 1: Запуск вручную через терминалы
+
+Backend:
+
+1. Создайте `back/.env`, если файла еще нет.
+2. Добавьте:
 
 ```env
-OPENROUTER_API_KEY=your_key_here
+OPENROUTER_API_KEY=your_openrouter_api_key
 ```
 
-### Запуск backend локально
-
-Перейдите в папку `back`, создайте и активируйте виртуальное окружение, затем установите зависимости:
+3. Запустите backend из папки `back` по инструкции из backend README:
 
 ```bash
-pip install -e ".[dev]"
-```
-
-После этого запустите API:
-
-```bash
+cd back
 uvicorn src.main:app --reload --host 0.0.0.0 --port 8000
 ```
 
-### Проверка Swagger
+Frontend:
 
-После запуска backend откройте документацию API:
-
-```text
-http://127.0.0.1:8000/docs
-```
-
-### Настройка frontend на backend
-
-В `front/.env` укажите адрес API:
+1. Создайте `front/.env`, если файла еще нет.
+2. Добавьте:
 
 ```env
-VITE_API_URL=http://localhost:8000
+VITE_API_URL=/api
+VITE_PROXY_TARGET=http://127.0.0.1:8000
 ```
+
+3. Запустите frontend из папки `front`:
+
+```bash
+cd front
+npm install
+npm run dev
+```
+
+После этого:
+
+- frontend будет доступен по адресу `http://localhost:5173`;
+- Swagger backend будет доступен по адресу `http://localhost:8000/docs`.
+
+### Вариант 2: Запуск через Docker Compose
+
+Docker Compose запускает frontend и backend вместе.
+
+Перед запуском Docker:
+
+1. Создайте `back/.env`.
+2. Добавьте:
+
+```env
+OPENROUTER_API_KEY=your_openrouter_api_key
+```
+
+Затем запустите из корня репозитория:
+
+```bash
+docker compose up --build
+```
+
+После этого:
+
+- frontend будет доступен по адресу `http://localhost:5173`;
+- Swagger backend будет доступен по адресу `http://localhost:8000/docs`.
+
+Полезные команды Docker:
+
+```bash
+docker compose up
+docker compose up --build
+docker compose up -d
+docker compose down
+```
+
+Кратко:
+
+- `docker compose up` запускает контейнеры;
+- `docker compose up --build` пересобирает образы и запускает контейнеры;
+- `docker compose up -d` запускает контейнеры в фоне;
+- `docker compose down` останавливает и удаляет контейнеры.
+
+Важные замечания:
+
+- `OPENROUTER_API_KEY` нужен только backend.
+- Не добавляйте `OPENROUTER_API_KEY` во frontend-файлы.
+- Не коммитьте реальные файлы `.env`.
+- `front/.env.example` и документацию можно коммитить.
+- Docker Compose запускайте из корня репозитория, а не из `front` или `back`.
+- Если запускаете только backend через его отдельный Docker Compose, используйте README backend.
+
+В Docker frontend использует внутреннее имя backend-сервиса `http://backend:8000`, а запросы к `/api` проксируются туда.
+
+---
 
 ---
 
@@ -293,7 +352,7 @@ Issue -> Development -> Create a branch / Checkout locally
 
 - Issue;
 - ветку;
-- будущий Pull Request.
+- будущий PR.
 
 ---
 
@@ -320,7 +379,7 @@ Issue -> Development -> Create a branch / Checkout locally
 
 ---
 
-## Как создать Pull Request
+## Как создать PR
 
 После завершения задачи добавьте изменения в коммит:
 
@@ -335,11 +394,11 @@ git commit -m "feat: add search form"
 git push origin feature/FE-12-add-search-form
 ```
 
-После этого откройте GitHub и создайте Pull Request.
+После этого откройте GitHub и создайте PR.
 
-### Важно проверить направление Pull Request
+### Важно проверить направление PR
 
-Pull Request должен идти из вашего fork в основной репозиторий.
+PR должен идти из вашего fork в основной репозиторий.
 
 Должно быть так:
 
