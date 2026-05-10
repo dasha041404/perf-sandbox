@@ -1,0 +1,12 @@
+.layout {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background: var(--theme-bg-app);
+  color: var(--theme-text-primary);
+}
+
+.main {
+  flex: 1;
+  padding: var(--space-8);
+}
