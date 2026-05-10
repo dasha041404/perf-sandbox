@@ -7,10 +7,8 @@ export function Header() {
   return (
     <header className={styles.header}>
       <div className={styles.container}>
-
-        
         <div className={styles.brand}>
-          <LogoIcon className={styles.logo} aria-hidden="true" focusable="false" />
+                <LogoIcon className={styles.logo} aria-hidden="true" focusable="false" />
           <h1 className={styles.title}>Template Engine Performance Sandbox</h1>
         </div>
 
