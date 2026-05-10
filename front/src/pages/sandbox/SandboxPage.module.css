@@ -149,6 +149,22 @@
   cursor: not-allowed;
 }
 
+.inputError {
+  border-color: var(--theme-danger);
+}
+
+.inputError:focus {
+  border-color: var(--theme-danger);
+  box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.1);
+}
+
+.errorMessage {
+  font-size: 0.625rem;
+  color: var(--theme-danger);
+  margin: var(--space-2) 0 0;
+  padding: 0;
+}
+
 @media (max-width: 768px) {
   .page {
     padding: var(--space-6) var(--space-8);
