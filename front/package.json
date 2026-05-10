@@ -11,7 +11,7 @@
     "format": "prettier . --ignore-path .prettierignore --write",
     "format:check": "prettier . --ignore-path .prettierignore --check",
     "preview": "vite preview",
-    "prepare": "husky"
+    "prepare": "cd .. && husky front/.husky"
   },
   "dependencies": {
     "react": "^19.2.5",
