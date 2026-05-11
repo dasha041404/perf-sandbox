@@ -1,0 +1,257 @@
+Общий стиль и дизайн:
+
+    Тема: Dark mode, минималистичный UI для разработчиков.
+    Цвета: Фон — темно-синий. Акценты — яркий синий. Текст — белый (основной) и серый (второстепенный).
+    Шрифты: Sans-serif для UI, Monospace для полей ввода.
+    Лейаут: Одноколоночная форма с отступами. Элементы со скругленными углами и тонкими рамками (outline).
+
+Структура элементов (сверху вниз):
+
+    Header: Иконка </>, белый заголовок "Template Engine Performance Sandbox". Справа навигация: "Sandbox" (белый) и "Results" (серый). Под хедером — разделительная линия (divider).
+    Dropdown (Select): Лейбл "Template Engine", поле ввода с тонкой рамкой и иконкой раскрытия (chevron) справа.
+    Textarea 1: Лейбл "Template Input". Высокое поле для кода, внутри плейсхолдер Enter template... e.g. Hello {{name}}.
+    Textarea 2: Лейбл "Input Data". Мелкий серый подзаголовок с инструкцией. Внутри моноширинный текст (name: John, age: 25).
+    Кнопки (в один ряд):
+        Primary: "Run Experiment" (синий фон, белый текст).
+        Secondary: "Generate for other engines" (цвет фона интерфейса, тонкая обводка, белый текст).
+
+Describing UI Functionality
+
+I'm currently focused on analyzing the request. I aim to describe the functionality and structure of the UI screenshots. I will avoid describing styling details like colors, and instead will focus on how the interface actually works. I am working on how best to provide a concise and useful description.
+
+Analyzing UI States
+
+I've begun deconstructing the UI image. I've identified the four distinct states: Start Page, No Results, Loading, and Result. I'm focusing on their common elements, like the header with the logo, title, and navigation tabs. I'm currently analyzing the start page, recognizing it as the active Sandbox tab with a form containing a dropdown and a textarea.
+
+Deconstructing UI Components
+
+I'm now diving into the specifics. I'm focusing on the "Input Data" section, which includes a textarea with pre-filled mock data and a label explaining the key:value format. I'm also examining the "Template Input" field, and analyzing the "Run Experiment" and "Generate" buttons within the button group. I've also identified a loading indicator within the loading state.
+
+I'm now analyzing State 3, the "No Results" state.
+
+Examining Data Display
+
+I'm now detailing State 4, the populated results view. I've focused on the data table, including its headers: ENGINE, INPUT, OUTPUT, EXECUTION TIME, and DATE. I've noted the "Select All" checkbox in the header. Each row includes a checkbox for selection, the engine name, input and output snippets, execution time, date/time, and an action icon.
+
+Structuring the Explanation
+
+I'm now focusing on synthesizing the description. I've decided to structure it based on the image's layout, starting with the app's overall structure, then detailing the Sandbox view and the Results view. I'm taking a moment for self-correction: I'll explicitly state that this is an application with two main tabs showing four different states.
+Основной ответ модели Gemini 3.1 Pro
+
+На изображении представлен интерфейс веб-приложения, состоящий из двух основных вкладок (страниц). Изображение разбито на 4 части, показывающие разные состояния этих страниц.
+
+Вот структурное описание компонентов и их функционального назначения для реализации на фронтенде:
+Общий элемент для всех экранов (Шапка/Header)
+
+    Логотип (иконка </>) и заголовок "Template Engine Performance Sandbox".
+    Навигационное меню (Tabs) с двумя пунктами: Sandbox и Results. Активный пункт переключает содержимое страницы.
+
+Вкладка 1: Sandbox (Форма ввода)
+
+Представлена на левой половине изображения в двух состояниях.
+
+Состояние 1: Стартовая страница (верхний левый угол)
+Содержит форму с тремя основными полями и блоком кнопок:
+
+    Select / Dropdown: Лейбл "Template Engine". Внутри плейсхолдер "Select a Template Engine".
+    Textarea (Поле для текста): Лейбл "Input Data". Под лейблом есть вспомогательный текст с инструкцией о формате ввода (key-value pairs на новых строках). Внутри поля содержится многострочный текст (пример данных).
+    Textarea (Поле для текста): Лейбл "Template Input". Внутри поля есть плейсхолдер с примером шаблона (Enter template...).
+    Блок кнопок:
+        Главная кнопка "Run Experiment" (запуск).
+        Второстепенная кнопка "Generate for other engines".
+
+Состояние 2: Загрузка (нижний левый угол)
+
+    Интерфейс абсолютно идентичен "Стартовой странице".
+    Новый элемент: Под блоком кнопок появляется индикатор загрузки/статуса. Он содержит иконку спиннера (или лоадера) и текст "Running benchmark...".
+
+Вкладка 2: Results (Таблица результатов)
+
+Представлена на правой половине изображения в двух состояниях.
+
+Состояние 3: Без результатов / Пустое состояние (верхний правый угол)
+
+    Контейнер для таблицы.
+    Заголовки колонок таблицы: ENGINE, INPUT, OUTPUT, EXECUTION TIME, DATE.
+    Тело таблицы: Пустое. Вместо данных отображается текстовое сообщение по центру: "No results yet. Run an experiment to see data here."
+
+Состояние 4: Результат (нижний правый угол)
+Таблица, заполненная данными.
+
+    Шапка таблицы (усложненная): Появился чекбокс "Select all" над заголовками колонок. Заголовки колонок те же (ENGINE, INPUT, OUTPUT, EXECUTION TIME, DATE).
+    Строка таблицы (Row): Содержит данные эксперимента.
+        Чекбокс (для выбора конкретной строки).
+        Текстовое значение (название движка).
+        Текстовое значение (ввод).
+        Текстовое значение (вывод).
+        Текстовое значение (время выполнения в миллисекундах).
+        Текстовое значение (дата и время).
+        Кнопка-иконка: Иконка корзины (удаление этой строки) в самом конце строки.
+
+Defining the Objective
+
+Okay, I'm now zeroing in on the core goal: to accurately depict the UI states in the image. I've broken down the request into its components, considering the audience - a frontend developer. My aim is to provide sufficient detail for UI construction, while I avoid getting bogged down in implementation details. The UI has four distinct states.
+
+Analyzing Visual Layout
+
+I've examined the image and segmented it, now focusing on each of the four quadrants. I'm noting the consistent header and navigation. The states each use a unique layout, so I am studying each quadrant's distinctive elements: the "выполнено" (Completed) state, the "результаты" (Results) tab, the modal window in "добавление шаблонизаторов", and the "heatmap" view.
+
+Detailing UI States
+
+Now, I'm diving deeper into the specifics. I am making sure to note the "выполнено" (Completed) state, which mirrors the "Sandbox" form but with a success banner added. I have also examined the elements of the "результаты" (Results) tab, noting the table structure and its header, which is "Select all".
+
+Defining Table Contents
+
+I'm now focusing on the table within the "результаты" (Results) tab. I'm noting the checkbox in each row, followed by columns: ENGINE, INPUT, OUTPUT, EXECUTION TIME, and DATE. I observe multiple table rows, with visible data including engine names (Liquid, Nunjucks, etc.), input/output strings, execution times (numeric value with "ms"), and date/time strings. I'm making sure to capture the execution time accurately.
+
+I've moved on to describe the modal dialog triggered by clicking "Generate for other engines", and I have noted that the modal window sits atop a dimmed Sandbox form.
+
+Describing Modal Components
+
+I'm now detailing the modal window's elements. I see a header with the title "Add Template Engines" and a sub-text description. There's a close button in the top right. Inside, there's a "Template Engines" dropdown, which may be a multi-select, and then two buttons at the bottom: "Cancel" and "Continue."
+
+I've moved on to describe the "heatmap" (Results Tab - Selected state + Heatmap view) component. This consists of the results table with all rows selected, plus a new data visualization component below it. The header is the standard one. The table has new buttons in the header, and all the checkboxes are checked.
+
+Defining Heatmap Details
+
+I'm now detailing the "heatmap" component. I've noted the right-aligned buttons "Build Heatmap" (primary) and "Clear selection" (secondary) in the table header. All checkboxes are checked in the table body, showing 6 rows as before. The heatmap component's header includes the title "Performance Heatmap" and a "Hide Heatmap" button. I've examined the heatmap's legend: "Execution Time (ms):" with color-coded labels (Fast, Medium, Slow). Finally, I've outlined the matrix/grid data: Engine names on the Y-axis, Inputs on the X-axis, and cells with execution times, some containing hyphens for missing data.
+Основной ответ модели Gemini 3.1 Pro
+
+На этом изображении представлены четыре новых состояния того же веб-приложения (вкладок Sandbox и Results).
+
+Ниже приведено структурное описание компонентов для каждого состояния без привязки к стилям.
+1. Состояние: «Выполнено» (Левый верхний угол)
+
+Это вкладка Sandbox после успешного завершения действия.
+
+    Верхняя часть: Стандартная шапка с навигацией (активна вкладка Sandbox).
+    Форма: Те же элементы, что и на стартовом экране (селект "Template Engine", текстовые поля "Input Data" и "Template Input", кнопки "Run Experiment" и "Generate for other engines").
+    Новый элемент (Уведомление): Под кнопками появился блок уведомления об успехе (Success Alert). Он содержит:
+        Иконку галочки (успех).
+        Текстовое сообщение: "Benchmark complete! Execution time: [значение]".
+
+2. Состояние: «Добавление шаблонизаторов» (Левый нижний угол)
+
+Это модальное окно (Popup/Dialog), открытое поверх вкладки Sandbox. Задний фон (основная страница) затемнен.
+
+    Модальное окно по центру экрана:
+        Шапка модалки: Заголовок "Add Template Engines", поясняющий подзаголовок и кнопка закрытия ("Крестик" в правом верхнем углу).
+        Тело модалки: Поле выбора (Dropdown/Select) с лейблом "Template Engines" и плейсхолдером.
+        Футер модалки: Две кнопки действий — "Cancel" (отмена) и "Continue" (продолжить, основная кнопка).
+
+3. Состояние: «Результаты» (Правый верхний угол)
+
+Это вкладка Results, содержащая заполненную таблицу данных.
+
+    Верхняя часть: Стандартная шапка (активна вкладка Results).
+    Блок таблицы:
+        Управление таблицей: Общий чекбокс "Select all" (Выбрать все).
+        Шапка таблицы: Колонки ENGINE, INPUT, OUTPUT, EXECUTION TIME, DATE.
+        Тело таблицы: Несколько строк с данными. В каждой строке:
+            Чекбокс (не выбран).
+            Название движка.
+            Код ввода.
+            Код вывода.
+            Время выполнения (число + "ms").
+            Дата и время.
+
+4. Состояние: «Heatmap» (Правый нижний угол)
+
+Это усложненный вид вкладки Results, когда выбраны элементы таблицы и открыт дополнительный график. Экран разделен на два основных блока.
+
+Блок 1: Таблица (сверху)
+
+    Чекбокс "Select all" находится в состоянии выбран (checked).
+    Новые элементы управления: Справа от "Select all", на одном уровне с ним, появились две кнопки:
+        "Build Heatmap" (основная кнопка).
+        "Clear selection" (второстепенная кнопка).
+    Тело таблицы: Те же строки, что и в состоянии №3, но все чекбоксы в строках выбраны.
+
+Блок 2: Heatmap / Тепловая карта (снизу)
+
+    Шапка блока: Заголовок "Performance Heatmap" и кнопка справа "Hide Heatmap" (Скрыть).
+    Легенда: Пояснение к значениям. Текст "Execution Time (ms):" и три индикатора (индикаторы диапазонов: Fast, Medium, Slow).
+    Матрица данных (Грид):
+        По оси Y (слева, строки): Названия движков.
+        По оси X (сверху, колонки): Усеченные строки ввода (инпуты).
+        Ячейки матрицы (пересечения): Содержат либо числовое значение (время), либо прочерк ("-"), если данных нет.
+
+Defining the Objective
+
+I've zeroed in on the primary goal: describing the UI layout from the image. Now, my focus is on breaking down its visual elements into a structured description. I'm starting by identifying the major components and how they're arranged, aiming for a comprehensive overview.
+
+Refining the Focus
+
+I'm now omitting all visual styling, and exclusively concentrating on structure and elements. The primary goal is to provide a clear layout blueprint. I've analyzed that the image shows four distinct UI states: three modal states stacked on the left, overlaying a "Sandbox" view and a complex table-heatmap view on the right. I'm starting to generate a component-wise description for each UI state.
+
+Analyzing the Modal States
+
+I'm now diving into the specifics of the modal dialog overlays, starting with the top-left state. I've noted the darkened background app, and I'm detailing the "выбранные шаблонизаторы" (Selected Template Engines) modal. It has a header, a body with a multi-select dropdown styled with "chips," and a footer with action buttons. I'm focusing on the interaction elements.
+
+Detailing the Loading State
+
+I'm now describing the "загрузка" state. It's a modal dialog, specifically a loading indicator overlay. Centered within are a circular spinner, the main status "Generating templates...", and the sub-text "Translating template into selected engines". There's no header, footer, or buttons, just informational content. I'm focusing on its blocking nature.
+
+Describing the View Details
+
+I'm now detailing the right-side dashboard view. I see two primary sections in the full-page view, likely the "Results" tab. The top section is a data table with headers and a selectable column and action buttons; I'm describing the table's contents, including a row of text data. I'm focusing on the interaction elements in the rows, such as checkboxes and a delete icon.
+
+Describing the Heatmap
+
+I'm now detailing the bottom "Performance Heatmap" section. It has a header with a title and a "Hide Heatmap" button. Below, there's a legend explaining the data categories. Finally, a grid/matrix presents the data. The Y-axis lists template engines, while the X-axis shows truncated input strings, with a scroll indicator. Cells contain numerical data, or hyphens for missing data, and are categorized according to the legend.
+Основной ответ модели Gemini 3.1 Pro
+
+На этом изображении представлены еще четыре состояния пользовательского интерфейса. Слева показаны три различных модальных окна (попапа), которые открываются поверх основной страницы (вкладки Sandbox). Справа показан развернутый вид страницы с результатами.
+
+Вот структурное описание элементов без стилей:
+Левая колонка: Модальные окна поверх основной формы
+
+Для всех трех состояний слева контекст одинаков: на заднем плане находится основная форма (селект, два текстовых поля, кнопки), но фон затемнен, а взаимодействие с ним заблокировано открытым модальным окном по центру экрана.
+
+1. Состояние: «Выбранные шаблонизаторы» (верхнее левое)
+
+    Тип компонента: Модальное окно (Dialog).
+    Шапка (Header): Заголовок "Add Template Engines", подзаголовок с инструкцией, кнопка закрытия ("крестик") в правом верхнем углу.
+    Тело (Body): Поле ввода типа Multi-select (множественный выбор).
+        Внутри поля отображаются выбранные элементы в виде «тегов» (чипсов). Каждый тег содержит название и иконку удаления (крестик).
+        В правой части поля ввода находится иконка раскрытия списка (стрелка вниз).
+    Подвал (Footer): Две кнопки: "Cancel" (второстепенная) и "Continue" (главная).
+
+2. Состояние: «Загрузка» (среднее левое)
+
+    Тип компонента: Информационное модальное окно состояния (Loading State).
+    Содержимое центрировано:
+        Анимированная иконка загрузки (спиннер/круговой лоадер).
+        Главный текст статуса ("Generating templates...").
+        Второстепенный поясняющий текст.
+    В этом окне нет крестика закрытия или кнопок действий.
+
+3. Состояние: «Review» (нижнее левое)
+
+    Тип компонента: Модальное окно (Dialog).
+    Шапка (Header): Заголовок "Review Generated Templates", подзаголовок, кнопка закрытия ("крестик").
+    Тело (Body): Вертикально прокручиваемый список блоков. Показано два таких блока. Каждый блок представляет собой:
+        Панель с названием (имя шаблонизатора) и индикатором того, что поле редактируемое (иконка "Editable").
+        Текстовое поле (Textarea), заполненное сгенерированным кодом.
+    Подвал (Footer): Две кнопки: "Back" (назад, второстепенная) и "Confirm & Run" (подтвердить и запустить, главная).
+
+Правая часть: Развернутый вид страницы (Dashboard)
+
+Здесь показан длинный, прокручиваемый вид страницы, состоящий из двух крупных вертикальных блоков.
+
+Верхний блок: Большая таблица данных
+
+    Панель управления: Слева чекбокс "Select all" (выбран). Справа две кнопки: "Build Heatmap" (главная) и "Clear selection" (второстепенная).
+    Заголовки таблицы: ENGINE, INPUT, OUTPUT, EXECUTION TIME, DATE.
+    Тело таблицы: Большое количество строк с данными (длинный список).
+        Каждая строка содержит: Чекбокс (многие из них отмечены), текстовые данные по каждой колонке.
+        В конце каждой строки находится кнопка с иконкой удаления (корзина).
+
+Нижний блок: Тепловая карта (Performance Heatmap)
+
+    Шапка блока: Заголовок "Performance Heatmap" и кнопка "Hide Heatmap" в правой части.
+    Легенда: Под заголовком находится шкала/пояснение данных. Текст "Execution Time (ms):" и три маркера категорий (например, быстро, средне, медленно).
+    Сетка данных (Grid/Matrix):
+        Ось Y (левая колонка): Список названий (шаблонизаторы).
+        Ось X (верхняя строка): Список текстовых значений (входные данные). В правой части строки заголовков есть иконка стрелки, указывающая на возможность горизонтальной прокрутки этой таблицы.
+        Ячейки: На пересечении строк и столбцов находятся ячейки. Они либо содержат числовое значение, либо прочерк ("-"), обозначающий отсутствие данных. Ячейки с числами визуально разделены на категории (согласно легенде выше).

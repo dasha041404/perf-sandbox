@@ -1,33 +1,45 @@
 import { NavLink } from 'react-router-dom';
+import { Anchor, Group, Text } from '@mantine/core';
+import { IconCode } from '@tabler/icons-react';
+
 import { ROUTES } from '../../config/routes';
-import styles from './Header.module.css';
-import { LogoIcon } from '../../assets';
 
 export function Header() {
   return (
-    <header className={styles.header}>
-      <div className={styles.container}>
-        <div className={styles.brand}>
-          <LogoIcon className={styles.logo} aria-hidden="true" focusable="false" />
-          <h1 className={styles.title}>Template Engine Performance Sandbox</h1>
-        </div>
+    <Group h="100%" px="xl" justify="space-between" wrap="nowrap">
+      <Group gap="sm" wrap="nowrap">
+        <IconCode size={22} stroke={2} />
+        <Text fw={600} size="lg">
+          Template Engine Performance Sandbox
+        </Text>
+      </Group>
 
-        <nav aria-label="Main navigation" className={styles.navigation}>
-          <NavLink
-            to={ROUTES.SANDBOX}
-            className={({ isActive }) => `${styles.link} ${isActive ? styles.linkActive : ''}`}
-            end
-          >
-            Sandbox
-          </NavLink>
-          <NavLink
-            to={ROUTES.RESULTS}
-            className={({ isActive }) => `${styles.link} ${isActive ? styles.linkActive : ''}`}
-          >
-            Results
-          </NavLink>
-        </nav>
-      </div>
-    </header>
+      <Group gap="lg" wrap="nowrap">
+        <Anchor
+          component={NavLink}
+          to={ROUTES.SANDBOX}
+          underline="never"
+          c="white"
+          fw={500}
+          // active styling via inline render prop
+          style={({ isActive }: { isActive: boolean }) => ({
+            color: isActive ? 'var(--mantine-color-white)' : 'var(--mantine-color-dimmed)',
+          })}
+        >
+          Sandbox
+        </Anchor>
+        <Anchor
+          component={NavLink}
+          to={ROUTES.RESULTS}
+          underline="never"
+          fw={500}
+          style={({ isActive }: { isActive: boolean }) => ({
+            color: isActive ? 'var(--mantine-color-white)' : 'var(--mantine-color-dimmed)',
+          })}
+        >
+          Results
+        </Anchor>
+      </Group>
+    </Group>
   );
 }

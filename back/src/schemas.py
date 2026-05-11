@@ -40,3 +40,15 @@ class ExperimentListPage(BaseModel):
     total: int = Field(..., ge=0)
     limit: int = Field(..., ge=1)
     offset: int = Field(..., ge=0)
+
+
+class PugRenderRequest(BaseModel):
+    template: str = Field(..., description="Pug template source")
+    data: dict[str, Any] | list[Any] = Field(
+        default_factory=dict,
+        description="Render context. Lists are exposed under the `items` key.",
+    )
+
+
+class PugRenderResponse(BaseModel):
+    output: str
