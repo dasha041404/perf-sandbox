@@ -1,0 +1,12 @@
+services:
+  # Holds the named volume used for the SQLite database file mount.
+  sqlite:
+    image: alpine:3.21
+    command: ["sh", "-c", "mkdir -p /data && chmod 777 /data && touch /data/.keep && exec tail -f /dev/null"]
+    volumes:
+      - sqlite_data:/data
+    restart: unless-stopped
+
+volumes:
+  sqlite_data:
+    name: sqlite_data

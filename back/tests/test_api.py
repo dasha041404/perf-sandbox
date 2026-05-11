@@ -85,3 +85,23 @@ def test_list_experiments_limit_validation(client: TestClient) -> None:
     assert r.status_code == 422
     r = client.get("/experiments", params={"limit": 501, "offset": 0})
     assert r.status_code == 422
+
+
+def test_delete_experiment(client: TestClient) -> None:
+    create_response = client.post("/experiments", json=_sample_payload())
+    assert create_response.status_code == 201
+    experiment_id = create_response.json()["id"]
+
+    delete_response = client.delete(f"/experiments/{experiment_id}")
+    assert delete_response.status_code == 204
+    assert delete_response.content == b""
+
+    list_response = client.get("/experiments")
+    assert list_response.status_code == 200
+    assert list_response.json()["total"] == 0
+
+
+def test_delete_experiment_not_found(client: TestClient) -> None:
+    r = client.delete("/experiments/999999")
+    assert r.status_code == 404
+    assert r.json()["detail"] == "Experiment with id=999999 not found"
