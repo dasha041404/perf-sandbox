@@ -1,4 +1,4 @@
-from fastapi import APIRouter, Depends, Query, status
+from fastapi import APIRouter, Depends, HTTPException, Query, status
 from sqlalchemy import func, select
 from sqlalchemy.orm import Session
 
@@ -38,3 +38,15 @@ def list_experiments(
     rows = list(db.scalars(stmt))
     items = [ExperimentRead.model_validate(r) for r in rows]
     return ExperimentListPage(items=items, total=total, limit=limit, offset=offset)
+
+
+@router.delete("/{experiment_id}", status_code=status.HTTP_204_NO_CONTENT)
+def delete_experiment(experiment_id: int, db: Session = Depends(get_db)) -> None:
+    row = db.get(Experiment, experiment_id)
+    if row is None:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail=f"Experiment with id={experiment_id} not found",
+        )
+    db.delete(row)
+    db.commit()

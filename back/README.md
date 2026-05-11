@@ -44,12 +44,13 @@ pip install -e ".[dev]"
 
 - `GET /experiments?limit=&offset=` — список с пагинацией; ответ: `items`, `total`, `limit`, `offset`. Параметры: `limit` от 1 до 500, `offset` ≥ 0.
 - `POST /experiments` — создание записи; в теле JSON: `engine` (один из Handlebars, Mustache, EJS, Pug, Nunjucks, Liquid), `input_template`, `input_data` (JSON-объект или массив), `output`, `execution_time` (секунды, ≥ 0), `data` (дата эксперимента, ISO `YYYY-MM-DD`).
+- `DELETE /experiments/{id}` — удаление записи по `id`; при успехе возвращает `204 No Content`, если запись не найдена — `404 Not Found`.
 
 ### Ручка `GET /list_templates`
 
 Транспиляция шаблона через [OpenRouter](https://openrouter.ai): query-параметры `engines` (список движков через запятую без пробелов, как в `TemplateEngine`), `input_engine`, `input_template`. Ответ — JSON-объект `{ "<движок>": "<строка шаблона>", ... }`.
 
-Нужна переменная окружения **`OPENROUTER_API_KEY`** (или запись в `.env` в `back/`); ключ в репозиторий не коммитить. В Docker можно передать ту же переменную в окружение сервиса `api` (см. `docker-compose.yml`).
+Нужна переменная окружения **`OPENROUTER_API_KEY`** (или запись в `.env` в `back/`); ключ в репозиторий не коммитить. В Docker можно передать ту же переменную в окружение сервиса `api` (см. `docker-compose.api.yml`).
 
 ## Запуск локально
 
@@ -106,10 +107,17 @@ mypy src
 
 ## Docker
 
-Из `back/`:
+Из `back/` сначала поднимите контейнер, который держит volume для SQLite:
 
 ```bash
-docker compose up --build
+docker compose -f docker-compose.db.yml up -d
 ```
 
-Сервис API слушает порт **8000**; файл SQLite лежит в общем именованном томе `sqlite_data` (данные сохраняются между перезапусками контейнеров).
+Далее запускайте API (с ребилдом при необходимости):
+
+```bash
+docker compose -f docker-compose.api.yml up --build
+```
+
+Сервис API слушает порт **8000**; файл SQLite лежит в именованном volume `sqlite_data`.
+Этот volume создаётся DB-стеком и подключается к API как `external`, поэтому данные БД не зависят от ребилда/пересоздания API-контейнера.
