@@ -19,3 +19,9 @@ export function createExperiment(payload: CreateExperimentPayload) {
     body: payload,
   });
 }
+
+export function deleteExperiment(id: number) {
+  return apiRequest<void>(`${EXPERIMENTS_PATH}/${id}`, {
+    method: 'DELETE',
+  });
+}

@@ -36,21 +36,21 @@ export function Heatmap({ model, onHide }: HeatmapProps) {
         <Box
           style={{
             display: 'grid',
-            gridTemplateColumns: `minmax(120px, max-content) repeat(${model.inputs.length}, minmax(110px, 1fr))`,
+            gridTemplateColumns: `minmax(120px, max-content) repeat(${model.outputs.length}, minmax(110px, 1fr))`,
             gap: 6,
             minWidth: '100%',
           }}
         >
           {/* Header row */}
           <Box />
-          {model.inputs.map((inp) => (
+          {model.outputs.map((out) => (
             <Box
-              key={`h-${inp}`}
+              key={`h-${out}`}
               p="xs"
               style={{ fontFamily: 'var(--mantine-font-family-monospace)', fontSize: 12 }}
-              title={inp}
+              title={out}
             >
-              {truncate(inp, 22)}
+              {truncate(out, 22)}
             </Box>
           ))}
 
@@ -70,12 +70,12 @@ function RowFragment({ engine, model }: { engine: string; model: HeatmapModel })
       <Box p="xs" fw={600}>
         {engine}
       </Box>
-      {model.inputs.map((inp) => {
-        const v = model.cells[`${engine}::${inp}`];
+      {model.outputs.map((out) => {
+        const v = model.cells[`${engine}::${out}`];
         if (v == null) {
           return (
             <Box
-              key={`${engine}-${inp}`}
+              key={`${engine}-${out}`}
               p="xs"
               ta="center"
               c="dimmed"
@@ -91,7 +91,7 @@ function RowFragment({ engine, model }: { engine: string; model: HeatmapModel })
         const bucket = bucketFor(v);
         return (
           <Box
-            key={`${engine}-${inp}`}
+            key={`${engine}-${out}`}
             p="xs"
             ta="center"
             c="white"

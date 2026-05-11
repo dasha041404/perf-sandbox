@@ -22,23 +22,23 @@ export const BUCKET_COLORS: Record<HeatBucket, string> = {
 
 export interface HeatmapModel {
   engines: TemplateEngine[];
-  inputs: string[]; // unique input_template values (truncated for display elsewhere)
-  cells: Record<string, number | null>; // key = `${engine}::${input}` -> ms or null
+  outputs: string[]; // unique output values (rendered template output)
+  cells: Record<string, number | null>; // key = `${engine}::${output}` -> ms or null
 }
 
 /**
  * Build a heatmap from a list of experiments. Cells aggregate by averaging
- * execution time of all experiments matching (engine, input_template).
+ * execution time of all experiments matching (engine, output).
  */
 export function buildHeatmap(items: ExperimentItem[]): HeatmapModel {
   const enginesSet = new Set<TemplateEngine>();
-  const inputsSet = new Set<string>();
+  const outputsSet = new Set<string>();
   const sums = new Map<string, { sum: number; count: number }>();
 
   for (const it of items) {
     enginesSet.add(it.engine);
-    inputsSet.add(it.input_template);
-    const key = `${it.engine}::${it.input_template}`;
+    outputsSet.add(it.output);
+    const key = `${it.engine}::${it.output}`;
     const cur = sums.get(key) ?? { sum: 0, count: 0 };
     cur.sum += it.execution_time * 1000;
     cur.count += 1;
@@ -47,15 +47,15 @@ export function buildHeatmap(items: ExperimentItem[]): HeatmapModel {
 
   const cells: Record<string, number | null> = {};
   const engines = Array.from(enginesSet);
-  const inputs = Array.from(inputsSet);
+  const outputs = Array.from(outputsSet);
   for (const e of engines) {
-    for (const inp of inputs) {
-      const key = `${e}::${inp}`;
+    for (const out of outputs) {
+      const key = `${e}::${out}`;
       const agg = sums.get(key);
       cells[key] = agg ? agg.sum / agg.count : null;
     }
   }
-  return { engines, inputs, cells };
+  return { engines, outputs, cells };
 }
 
 export function truncate(s: string, max = 22): string {

@@ -1,4 +1,4 @@
-export type HttpMethod = 'GET' | 'POST';
+export type HttpMethod = 'GET' | 'POST' | 'DELETE';
 
 export type QueryParamValue = string | number | boolean | null | undefined;
 

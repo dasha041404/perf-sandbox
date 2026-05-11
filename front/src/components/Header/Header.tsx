@@ -1,8 +1,14 @@
 import { NavLink } from 'react-router-dom';
-import { Anchor, Group, Text } from '@mantine/core';
+import { Group, Text } from '@mantine/core';
 import { IconCode } from '@tabler/icons-react';
 
 import { ROUTES } from '../../config/routes';
+
+const linkStyle = ({ isActive }: { isActive: boolean }): React.CSSProperties => ({
+  color: isActive ? 'var(--mantine-color-white)' : 'var(--mantine-color-dimmed)',
+  textDecoration: 'none',
+  fontWeight: 500,
+});
 
 export function Header() {
   return (
@@ -15,30 +21,12 @@ export function Header() {
       </Group>
 
       <Group gap="lg" wrap="nowrap">
-        <Anchor
-          component={NavLink}
-          to={ROUTES.SANDBOX}
-          underline="never"
-          c="white"
-          fw={500}
-          // active styling via inline render prop
-          style={({ isActive }: { isActive: boolean }) => ({
-            color: isActive ? 'var(--mantine-color-white)' : 'var(--mantine-color-dimmed)',
-          })}
-        >
+        <NavLink to={ROUTES.SANDBOX} style={linkStyle}>
           Sandbox
-        </Anchor>
-        <Anchor
-          component={NavLink}
-          to={ROUTES.RESULTS}
-          underline="never"
-          fw={500}
-          style={({ isActive }: { isActive: boolean }) => ({
-            color: isActive ? 'var(--mantine-color-white)' : 'var(--mantine-color-dimmed)',
-          })}
-        >
+        </NavLink>
+        <NavLink to={ROUTES.RESULTS} style={linkStyle}>
           Results
-        </Anchor>
+        </NavLink>
       </Group>
     </Group>
   );

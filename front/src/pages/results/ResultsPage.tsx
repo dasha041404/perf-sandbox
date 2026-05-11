@@ -2,7 +2,6 @@ import { useMemo, useState } from 'react';
 import {
   ActionIcon,
   Alert,
-  Box,
   Button,
   Card,
   Center,
@@ -10,44 +9,64 @@ import {
   Code,
   Group,
   Loader,
+  Pagination,
+  Select,
   Stack,
   Table,
   Text,
   Title,
   Tooltip,
 } from '@mantine/core';
+import { notifications } from '@mantine/notifications';
 import { IconTrash } from '@tabler/icons-react';
 
 import { useExperiments } from '../../hooks/useExperiments';
 import { buildHeatmap, truncate } from '../../lib/heatmap';
+import { deleteExperiment } from '../../services/experiments-service';
 import { Heatmap } from './Heatmap';
+
+const PAGE_SIZE_OPTIONS = ['10', '20', '50', '100'];
+const DEFAULT_PAGE_SIZE = 20;
 
 export function ResultsPage() {
   const { items, loading, error, refetch } = useExperiments();
   const [selected, setSelected] = useState<Set<number>>(new Set());
-  const [hidden, setHidden] = useState<Set<number>>(new Set());
   const [showHeat, setShowHeat] = useState(false);
+  const [deletingIds, setDeletingIds] = useState<Set<number>>(new Set());
 
-  const visible = useMemo(() => items.filter((it) => !hidden.has(it.id)), [items, hidden]);
-  const allSelected = visible.length > 0 && visible.every((it) => selected.has(it.id));
-  const someSelected = !allSelected && visible.some((it) => selected.has(it.id));
+  const [page, setPage] = useState(1);
+  const [pageSize, setPageSize] = useState<number>(DEFAULT_PAGE_SIZE);
 
-  const selectedItems = useMemo(
-    () => visible.filter((it) => selected.has(it.id)),
-    [visible, selected],
-  );
+  const totalPages = Math.max(1, Math.ceil(items.length / pageSize));
+  // Clamp the page locally during render — avoids cascading setState in effects.
+  const currentPage = Math.min(page, totalPages);
 
-  const heatmapModel = useMemo(
-    () => buildHeatmap(selectedItems.length > 0 ? selectedItems : visible),
-    [selectedItems, visible],
-  );
+  const pageItems = useMemo(() => {
+    const start = (currentPage - 1) * pageSize;
+    return items.slice(start, start + pageSize);
+  }, [items, currentPage, pageSize]);
 
-  function toggleAll() {
-    if (allSelected) {
-      setSelected(new Set());
-    } else {
-      setSelected(new Set(visible.map((it) => it.id)));
-    }
+  const allOnPageSelected = pageItems.length > 0 && pageItems.every((it) => selected.has(it.id));
+  const someOnPageSelected = !allOnPageSelected && pageItems.some((it) => selected.has(it.id));
+
+  const selectedItems = useMemo(() => items.filter((it) => selected.has(it.id)), [items, selected]);
+
+  const heatmapModel = useMemo(() => buildHeatmap(selectedItems), [selectedItems]);
+
+  // Heatmap is only visible while the user has at least one row selected.
+  // Deselecting the last row automatically hides it without needing an effect.
+  const heatmapVisible = showHeat && selectedItems.length > 0;
+
+  function toggleAllOnPage() {
+    setSelected((prev) => {
+      const next = new Set(prev);
+      if (allOnPageSelected) {
+        for (const it of pageItems) next.delete(it.id);
+      } else {
+        for (const it of pageItems) next.add(it.id);
+      }
+      return next;
+    });
   }
 
   function toggleOne(id: number) {
@@ -57,6 +76,41 @@ export function ResultsPage() {
       else next.add(id);
       return next;
     });
+  }
+
+  function clearSelection() {
+    setSelected(new Set());
+    setShowHeat(false);
+  }
+
+  async function handleDelete(id: number) {
+    setDeletingIds((prev) => {
+      const next = new Set(prev);
+      next.add(id);
+      return next;
+    });
+    try {
+      await deleteExperiment(id);
+      setSelected((prev) => {
+        if (!prev.has(id)) return prev;
+        const next = new Set(prev);
+        next.delete(id);
+        return next;
+      });
+      await refetch();
+    } catch (e) {
+      notifications.show({
+        title: 'Failed to delete experiment',
+        message: e instanceof Error ? e.message : String(e),
+        color: 'red',
+      });
+    } finally {
+      setDeletingIds((prev) => {
+        const next = new Set(prev);
+        next.delete(id);
+        return next;
+      });
+    }
   }
 
   return (
@@ -75,18 +129,21 @@ export function ResultsPage() {
       )}
 
       <Card withBorder padding={0}>
-        {visible.length > 0 && (
+        {pageItems.length > 0 && (
           <Group justify="space-between" px="md" py="sm">
             <Checkbox
-              label="Select all"
-              checked={allSelected}
-              indeterminate={someSelected}
-              onChange={toggleAll}
+              label="Select all on page"
+              checked={allOnPageSelected}
+              indeterminate={someOnPageSelected}
+              onChange={toggleAllOnPage}
             />
             {selected.size > 0 && (
               <Group gap="sm">
+                <Text size="sm" c="dimmed">
+                  {selected.size} selected
+                </Text>
                 <Button onClick={() => setShowHeat(true)}>Build Heatmap</Button>
-                <Button variant="default" onClick={() => setSelected(new Set())}>
+                <Button variant="default" onClick={clearSelection}>
                   Clear selection
                 </Button>
               </Group>
@@ -94,11 +151,11 @@ export function ResultsPage() {
           </Group>
         )}
 
-        {loading && visible.length === 0 ? (
+        {loading && items.length === 0 ? (
           <Center py="xl">
             <Loader />
           </Center>
-        ) : visible.length === 0 ? (
+        ) : items.length === 0 ? (
           <Center py="xl">
             <Text c="dimmed">No results yet. Run an experiment to see data here.</Text>
           </Center>
@@ -117,7 +174,7 @@ export function ResultsPage() {
                 </Table.Tr>
               </Table.Thead>
               <Table.Tbody>
-                {visible.map((it) => (
+                {pageItems.map((it) => (
                   <Table.Tr key={it.id}>
                     <Table.Td>
                       <Checkbox
@@ -148,18 +205,13 @@ export function ResultsPage() {
                       </Text>
                     </Table.Td>
                     <Table.Td>
-                      <Tooltip label="Hidden locally (backend has no delete endpoint)" withArrow>
+                      <Tooltip label="Delete experiment" withArrow>
                         <ActionIcon
                           variant="subtle"
-                          color="gray"
-                          onClick={() =>
-                            setHidden((prev) => {
-                              const next = new Set(prev);
-                              next.add(it.id);
-                              return next;
-                            })
-                          }
-                          aria-label={`hide row ${it.id}`}
+                          color="red"
+                          onClick={() => void handleDelete(it.id)}
+                          loading={deletingIds.has(it.id)}
+                          aria-label={`delete row ${it.id}`}
                         >
                           <IconTrash size={16} />
                         </ActionIcon>
@@ -171,18 +223,43 @@ export function ResultsPage() {
             </Table>
           </Table.ScrollContainer>
         )}
+
+        {items.length > 0 && (
+          <Group justify="space-between" px="md" py="sm">
+            <Group gap="sm">
+              <Text size="sm" c="dimmed">
+                Rows per page
+              </Text>
+              <Select
+                size="xs"
+                w={80}
+                value={String(pageSize)}
+                onChange={(v) => {
+                  if (v == null) return;
+                  setPageSize(Number(v));
+                  setPage(1);
+                }}
+                data={PAGE_SIZE_OPTIONS}
+                allowDeselect={false}
+              />
+              <Text size="sm" c="dimmed">
+                {(currentPage - 1) * pageSize + 1}–{Math.min(currentPage * pageSize, items.length)}{' '}
+                of {items.length}
+              </Text>
+            </Group>
+            <Pagination
+              value={currentPage}
+              onChange={setPage}
+              total={totalPages}
+              size="sm"
+              withEdges
+            />
+          </Group>
+        )}
       </Card>
 
-      {showHeat && heatmapModel.engines.length > 0 && (
+      {heatmapVisible && heatmapModel.engines.length > 0 && (
         <Heatmap model={heatmapModel} onHide={() => setShowHeat(false)} />
-      )}
-
-      {hidden.size > 0 && (
-        <Box>
-          <Button variant="subtle" size="xs" onClick={() => setHidden(new Set())}>
-            Restore {hidden.size} hidden row(s)
-          </Button>
-        </Box>
       )}
     </Stack>
   );

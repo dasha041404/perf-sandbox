@@ -1,4 +1,4 @@
-export { createExperiment, getExperiments } from './experiments-service';
+export { createExperiment, deleteExperiment, getExperiments } from './experiments-service';
 export { getTemplates } from './templates-service';
 
 export { ApiClientError } from './api-types';
