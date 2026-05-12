@@ -45,7 +45,8 @@
 - EJS
 - Pug
 - Nunjucks
-- Liquid
+- Liqui
+- Handlebar
 
 ## Принцип работы
 
