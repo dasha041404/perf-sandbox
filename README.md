@@ -41,10 +41,11 @@
 
 ## Поддерживаемые шаблонизаторы (TODO)
 
-- Jinja2
-- Mako
+- Mustache
+- EJS
 - Pug
-- Handlebars
+- Nunjucks
+- Liquid
 
 ## Принцип работы
 
